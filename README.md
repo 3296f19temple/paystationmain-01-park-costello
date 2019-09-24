@@ -1,2 +1,2 @@
 
-![Use Case Image](PayStationUML.png)
+![Use Case Image](PayStationUML.PNG)
