@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package paystation.domain;
+import java.util.Scanner;
 
 /**
  *
@@ -11,14 +12,14 @@ package paystation.domain;
  * @author Noah Costello
  */
 public class PayStationMain {
-    public static void main(String[] args){//the input array args is there to declare initial rate on startup
+    public static void main(String args[]){//the input array args is there to declare initial rate on startup
         //If no initial rate is given, the rate will default to Alphatown, the linear rate
         //System.out.println("Welcome to the paystation.");
         
         boolean activeTransaction; //true until a transaction is closed
         char location; //accepted values should be A, B, or G for the respective towns
         
-        if(args.length == 1){ //initial rate setup if cmd line input given
+        if(args.length > 0){ //initial rate setup if cmd line input given
             switch(args[0].charAt(0)){
                 case 'A':
                     location = 'A';
