@@ -13,7 +13,11 @@ Whent the cancel function is used, the coin values and quantities are printed.
 Lastly, we need to implement three different rate strategies for converting 
 input coin value into time, and a means of swapping between the three.
 
-
+In the repo, there is a PayStationUML file (not the .PNG one). This is an editable
+file that can be downloaded and modified using [draw.io](https://www.draw.io/).
+This has been added so that changes to the design of the project can easily be 
+updated rather than created from scratch each time.
 
 
 ![Use Case Image](PayStationUML.PNG)
+
