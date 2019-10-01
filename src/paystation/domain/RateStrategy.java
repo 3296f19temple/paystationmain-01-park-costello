@@ -11,6 +11,25 @@ package paystation.domain;
  */
 public interface RateStrategy {
     
-    public int calculateTime(int moneyInserted);
+    int calculateTime(int moneyInserted);
     
 }
+
+class ProgressiveRateStrategy implements RateStrategy {
+
+    @Override
+    public int calculateTime(int moneyInserted) {
+        return 0;
+    }
+
+}
+
+class LinearRateStrategy implements RateStrategy {
+
+    @Override
+    public int calculateTime(int moneyInserted) {
+        return moneyInserted / 5 * 2;
+    }
+
+}
+
