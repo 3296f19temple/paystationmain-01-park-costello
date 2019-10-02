@@ -27,10 +27,10 @@ public class PayStationImpl implements PayStation {
         rateStrategy = new LinearRateStrategy();
     }
 
-    enum Town {
-        Alphatown, Betatown, Gammatown
-        //accepted values should be A, B, or G for the respective towns
-    }
+//    enum Town {
+//        Alphatown, Betatown, Gammatown
+//        //accepted values should be A, B, or G for the respective towns
+//    }
     private int insertedSoFar;
     private int timeBought;
     private Map coinMap = new HashMap();

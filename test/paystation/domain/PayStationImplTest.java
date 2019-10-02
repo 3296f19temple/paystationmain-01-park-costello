@@ -19,6 +19,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import javax.swing.*;
+import javax.xml.stream.events.ProcessingInstruction;
+
 public class PayStationImplTest {
 
     PayStation ps;
@@ -297,6 +300,18 @@ public class PayStationImplTest {
         Map result = instance.cancel();
         Map emptyMap = new HashMap();
         assertEquals(emptyMap, result);
+    }
+
+    @Test
+    public void testProgressiveRateStrategy() throws Exception
+    {
+        RateStrategy rateStrategy = new ProgressiveRateStrategy();
+        assertEquals(40, rateStrategy.calculateTime(100)); //<150
+        assertEquals(60, rateStrategy.calculateTime(150)); //=150
+        assertEquals(105, rateStrategy.calculateTime(300)); //<350
+        assertEquals(120, rateStrategy.calculateTime(350)); //=350
+        assertEquals(130, rateStrategy.calculateTime(400)); //>350
+
     }
     
     
