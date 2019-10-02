@@ -22,10 +22,7 @@ import java.util.*;
  */
 public class PayStationImpl implements PayStation {
 
-    PayStationImpl() {
 
-        rateStrategy = new LinearRateStrategy();
-    }
 
 //    enum Town {
 //        Alphatown, Betatown, Gammatown
@@ -39,6 +36,27 @@ public class PayStationImpl implements PayStation {
     private boolean quarterBool = false;
     private Town currentLocation = Town.Alphatown;
     private RateStrategy rateStrategy;
+
+
+    public PayStationImpl() {
+
+        this.coinMap = new HashMap();
+        this.currentLocation = Town.Alphatown;
+        this.rateStrategy = new LinearRateStrategy();
+    }
+
+
+    public PayStationImpl(Town inputLocation, RateStrategy inputRate) {
+
+        this.coinMap = new HashMap();
+        this.currentLocation = inputLocation;
+        this.rateStrategy = inputRate;
+    }
+
+    public void changeTown(Town newLocation, RateStrategy newRate){
+        this.currentLocation = newLocation;
+        this.rateStrategy = newRate;
+    }
     
     @Override
     public void addPayment(int coinValue)
