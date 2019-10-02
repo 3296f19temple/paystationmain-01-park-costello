@@ -5,6 +5,7 @@
  */
 package paystation.domain;
 import java.rmi.server.ExportException;
+import java.util.Map;
 import java.util.Scanner;
 
 enum Town {
@@ -41,6 +42,16 @@ public class PayStationMain {
                 
         activeTransaction = true; 
         System.out.println("Paystation is now active. Starting new transaction.");
+        System.out.println("Commands are:");
+        System.out.println("\tAcceptable inputs:");
+        System.out.println("\tadd payment");
+        System.out.println("\tread display");
+        System.out.println("\tbuy");
+        System.out.println("\tcancel");
+        System.out.println("\tlogin");
+        System.out.println("\tlogout");
+        System.out.println("\tchange town");
+        System.out.println("\tshutdown");
 
         PayStationImpl ps = new PayStationImpl(Town.Alphatown, new LinearRateStrategy());
         while(activeTransaction){
@@ -78,13 +89,31 @@ public class PayStationMain {
 
             }
             else if(input.equals("read display")){//readDisplay
-
+                int display = ps.readDisplay();
+                System.out.println("Current time bought = " + display);
             }
             else if(input.equals("buy")){//buy
-
+                System.out.println("You have purchased: " + ps.buy().value() + " minutes.");
+                break;
+                //TODO: add reciept
             }
             else if(input.equals("cancel")){//cancel
-
+                Map<Integer, Integer> retval= ps.cancel();
+                for(Integer key: retval.keySet()) {
+                    switch(key) {
+                        case 1:
+                            System.out.println("Returning " + retval.get(key) + " nickels");
+                            break;
+                        case 2:
+                            System.out.println("Returning " + retval.get(key) + " dimes");
+                            break;
+                        case 3:
+                            System.out.println("Returning " + retval.get(key) + " quarters");
+                            break;
+                    }
+                }
+                System.out.println("Transaction canceled");
+                break;
             }
             else if(input.equals("login")){//login
                 System.out.println("Username: "); //root
@@ -109,19 +138,25 @@ public class PayStationMain {
             }
             else if(input.equals("change town")){//changeTown and updateRate
                 if(admin){
-                    System.out.println("Enter the new town");
-                    input = userInput.nextLine();
-                    if(input.equals("Alphatown")){
-                        ps.changeTown(Town.Alphatown, new LinearRateStrategy());
-                        System.out.println("Town changed to Alphatown");
-                    }
-                    else if(input.equals("Betatown")){
-                        ps.changeTown(Town.Betatown, new ProgressiveRateStrategy());
-                        System.out.println("Town changed to Betatown");
-                    }
-                    else if(input.equals("Gammatown")){
-                        ps.changeTown(Town.Gammatown, new AlternatingRateStrategy());
-                        System.out.println("Town changed to Gammatown");
+                    while(true) {
+                        System.out.println("Enter the new town");
+                        input = userInput.nextLine();
+                        if (input.equals("Alphatown")) {
+                            ps.changeTown(Town.Alphatown, new LinearRateStrategy());
+                            System.out.println("Town changed to Alphatown");
+                            break;
+                        } else if (input.equals("Betatown")) {
+                            ps.changeTown(Town.Betatown, new ProgressiveRateStrategy());
+                            System.out.println("Town changed to Betatown");
+                            break;
+                        } else if (input.equals("Gammatown")) {
+                            ps.changeTown(Town.Gammatown, new AlternatingRateStrategy());
+                            System.out.println("Town changed to Gammatown");
+                            break;
+                        } else {
+                            System.out.println("That is not a town name");
+                            continue;
+                        }
                     }
                 }
                 else{
@@ -148,6 +183,8 @@ public class PayStationMain {
             }
 
         }
+        System.out.println("************");
+        System.out.println("Goodbye!");
     }
     
 
