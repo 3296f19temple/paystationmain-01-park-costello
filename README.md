@@ -34,7 +34,8 @@ updated rather than created from scratch each time.
 Chris: created Readme file and UML diagram, created outline for main file,
 designed Impl object.
 
-Noah:
+Noah: filled while() loop, cleaned and bug fixed code, created new
+unit tests, tested final product.
 
 ## Testing
 There were already some implemented unit tests included in the standardized
