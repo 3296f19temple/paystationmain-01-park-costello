@@ -19,7 +19,7 @@ public interface RateStrategy {
     
 }
 
-class ProgressiveRateStrategy implements RateStrategy {
+class ProgressiveRateStrategy implements RateStrategy { //for Betatown
 
     int timeBought = 0;
 
@@ -42,7 +42,7 @@ class ProgressiveRateStrategy implements RateStrategy {
 
 }
 
-class LinearRateStrategy implements RateStrategy {
+class LinearRateStrategy implements RateStrategy { //for Alphatown
 
     @Override
     public int calculateTime(int moneyInserted) {
@@ -51,7 +51,7 @@ class LinearRateStrategy implements RateStrategy {
 
 }
 
-class AlternatingRateStrategy implements RateStrategy {
+class AlternatingRateStrategy implements RateStrategy { //for Gammatown
 
     @Override
     public int calculateTime(int moneyInserted) {
