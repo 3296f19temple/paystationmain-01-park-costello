@@ -37,6 +37,15 @@ public class PayStationImpl implements PayStation {
     private Town currentLocation = Town.Alphatown;
     private RateStrategy rateStrategy;
 
+
+    public PayStationImpl() {
+
+        this.coinMap = new HashMap();
+        this.currentLocation = Town.Alphatown;
+        this.rateStrategy = new LinearRateStrategy();
+    }
+
+
     public PayStationImpl(Town inputLocation, RateStrategy inputRate) {
 
         this.coinMap = new HashMap();

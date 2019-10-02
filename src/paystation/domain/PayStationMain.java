@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package paystation.domain;
+import java.rmi.server.ExportException;
 import java.util.Scanner;
 
 enum Town {
@@ -16,28 +17,7 @@ enum Town {
  * @author Christopher Park
  * @author Noah Costello
  */
-class townPaystation{
-    Town activeLocation;
-    //PayStation ps = new PayStationImpl();
 
-    townPaystation(Town currentLocation){
-        this.activeLocation = currentLocation;
-    }
-
-
-
-    public void updateRate(Town currentLocation){
-        if(currentLocation == Town.Alphatown){
-            this.currentRate = linear;
-        }
-        else if(currentLocation == Town.Betatown){
-            this.currentRate = progressive;
-        }
-        else if(currentLocation == Town.Gammatown){
-            this.currentRate = alternating;
-        }
-    }
-}
 
 public class PayStationMain {
 
@@ -73,23 +53,29 @@ public class PayStationMain {
             *  and Change between rates using a function in this while loop.
             */
             if(input.equals("add payment")){//addPayment
-                System.out.println("what coin are you entering? (N, D, Q)");
-                input = userInput.nextLine();
-                if(input.equals("N")){
-                    ps.addPayment(5);
-                    System.out.println("Nickel inserted");
+                System.out.println("what coin are you entering? (5, 10, 25). Enter 1 to stop adding coins");
+                int coin;
+                while(true) {
+                    input = userInput.nextLine();
+                    try {
+                        coin = Integer.parseInt(input);
+                    } catch (Exception e) {
+                        System.out.println("You must enter a coin value.");
+                        continue;
+                    }
+                    try {
+                        ps.addPayment(coin);
+                        System.out.println("You have added: " + coin);
+                    } catch (IllegalCoinException e) {
+                        if(coin == 1) {
+                            System.out.println("You have stopped entering coins");
+                            break;
+                        }
+                        System.out.println("You must enter 5, 10, or 25");
+                        continue;
+                    }
                 }
-                else if(input.equals("D")){
-                    ps.addPayment(10);
-                    System.out.println("Dime inserted");
-                }
-                else if(input.equals("Q")){
-                    ps.addPayment(25);
-                    System.out.println("Quarter Inserted");
-                }
-                else{
-                    System.out.println("Not valid input");
-                }
+
             }
             else if(input.equals("read display")){//readDisplay
 
