@@ -18,25 +18,23 @@ enum Town {
  */
 class townPaystation{
     Town activeLocation;
-    RateStrategy currentRate;
+    //PayStation ps = new PayStationImpl();
 
     townPaystation(Town currentLocation){
         this.activeLocation = currentLocation;
     }
 
-    public void changeTown(Town currentLocation){
-        this.activeLocation = currentLocation;
-    }
 
-    public void updateRate(){
-        if(this.activeLocation == Town.Alphatown){
-            this.currentRate = LinearRateStrategy;
+
+    public void updateRate(Town currentLocation){
+        if(currentLocation == Town.Alphatown){
+            this.currentRate = linear;
         }
-        else if(this.activeLocation == Town.Betatown){
-            this.currentRate = ProgressiveRateStrategy;
+        else if(currentLocation == Town.Betatown){
+            this.currentRate = progressive;
         }
-        else if(this.activeLocation == Town.Gammatown){
-            this.currentRate = AlternatingRateStrategy;
+        else if(currentLocation == Town.Gammatown){
+            this.currentRate = alternating;
         }
     }
 }
@@ -58,34 +56,13 @@ public class PayStationMain {
         Town currentLocation;
         boolean admin = false; // changed with login/logout 
         boolean activeTransaction = true; //true until a transaction is close
-        //initial rate setup if cmd line input given
 
-        if(args.length > 0) switch (args[0].charAt(0)) {
-            case 'A':
-                currentLocation = Town.Alphatown;
-                System.out.println("Booting up paystation with Alphatown and linear rate.");
-            case 'B':
-                currentLocation = Town.Betatown;
-                System.out.println("Booting up paystation with Betatown and progressive rate.");
-            case 'G':
-                currentLocation = Town.Gammatown;
-                System.out.println("Booting up paystation with Gammatown and alternating rate.");
-            default://if detected input is not a valid input
-                System.out.println("detected input is not valid. Defaulting to Alphatown and linear rate.");
-                currentLocation = Town.Alphatown;
-        } else {//initial rate setup if cmd line input not given. Defaults to linear rate
-            currentLocation = Town.Alphatown;
-            System.out.println("Booting up paystation with Alphatown and linear rate.");
-        }
-
-        townPaystation mobilePay = new townPaystation(currentLocation);
-        mobilePay.updateRate();
         //Paystation object with associated rate and town now created
                 
         activeTransaction = true; 
         System.out.println("Paystation is now active. Starting new transaction.");
 
-        //PayStation ps = new PayStationImpl();
+        PayStationImpl ps = new PayStationImpl(Town.Alphatown, new LinearRateStrategy());
         while(activeTransaction){
             System.out.println("What would you like to do?");
             input = userInput.nextLine();
@@ -96,7 +73,23 @@ public class PayStationMain {
             *  and Change between rates using a function in this while loop.
             */
             if(input.equals("add payment")){//addPayment
-
+                System.out.println("what coin are you entering? (N, D, Q)");
+                input = userInput.nextLine();
+                if(input.equals("N")){
+                    ps.addPayment(5);
+                    System.out.println("Nickel inserted");
+                }
+                else if(input.equals("D")){
+                    ps.addPayment(10);
+                    System.out.println("Dime inserted");
+                }
+                else if(input.equals("Q")){
+                    ps.addPayment(25);
+                    System.out.println("Quarter Inserted");
+                }
+                else{
+                    System.out.println("Not valid input");
+                }
             }
             else if(input.equals("read display")){//readDisplay
 
@@ -115,6 +108,7 @@ public class PayStationMain {
                     input = userInput.nextLine();
                     if(input.equals("toor")){
                         admin = true;
+                        System.out.println("logged in");
                     }
                     else{
                         System.out.println("login failed");
@@ -131,6 +125,18 @@ public class PayStationMain {
                 if(admin){
                     System.out.println("Enter the new town");
                     input = userInput.nextLine();
+                    if(input.equals("Alphatown")){
+                        ps.changeTown(Town.Alphatown, new LinearRateStrategy());
+                        System.out.println("Town changed to Alphatown");
+                    }
+                    else if(input.equals("Betatown")){
+                        ps.changeTown(Town.Betatown, new ProgressiveRateStrategy());
+                        System.out.println("Town changed to Betatown");
+                    }
+                    else if(input.equals("Gammatown")){
+                        ps.changeTown(Town.Gammatown, new AlternatingRateStrategy());
+                        System.out.println("Town changed to Gammatown");
+                    }
                 }
                 else{
                     System.out.println("admin only functionality");
