@@ -11,6 +11,7 @@
  */
 package paystation.domain;
 
+import java.awt.*;
 import java.util.*;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -21,6 +22,10 @@ import org.junit.BeforeClass;
 
 import javax.swing.*;
 import javax.xml.stream.events.ProcessingInstruction;
+
+import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class PayStationImplTest {
 
@@ -313,6 +318,28 @@ public class PayStationImplTest {
         assertEquals(130, rateStrategy.calculateTime(400)); //>350
 
     }
-    
-    
+
+    @Test
+    public void testAlternatingRateStrategy() throws Exception {
+
+        RateStrategy rateStrategy = new AlternatingRateStrategy();
+        Date today = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(today);
+        if ((calendar.get(Calendar.DAY_OF_WEEK) == 1) ||
+                calendar.get(Calendar.DAY_OF_WEEK) == 7) {
+            assertEquals(40, rateStrategy.calculateTime(100)); //<150
+            assertEquals(60, rateStrategy.calculateTime(150)); //=150
+            assertEquals(120, rateStrategy.calculateTime(300)); //<350
+            assertEquals(140, rateStrategy.calculateTime(350)); //=350
+            assertEquals(160, rateStrategy.calculateTime(400)); //>350
+        } else {
+            assertEquals(40, rateStrategy.calculateTime(100)); //<150
+            assertEquals(60, rateStrategy.calculateTime(150)); //=150
+            assertEquals(105, rateStrategy.calculateTime(300)); //<350
+            assertEquals(120, rateStrategy.calculateTime(350)); //=350
+            assertEquals(130, rateStrategy.calculateTime(400)); //>350
+        }
+    }
+
 }
