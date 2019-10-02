@@ -56,6 +56,7 @@ public class PayStationMain {
         Scanner userInput = new Scanner(System.in);
         String input;
         Town currentLocation;
+        boolean admin = false; // changed with login/logout 
         boolean activeTransaction = true; //true until a transaction is close
         //initial rate setup if cmd line input given
 
@@ -94,8 +95,66 @@ public class PayStationMain {
             *  Print total returned value and number of each coin type with cancel(),
             *  and Change between rates using a function in this while loop.
             */
-            userInput.close();
-            activeTransaction = false; //temp function to close loop. Comment out later.
+            if(input.equals("add payment")){//addPayment
+
+            }
+            else if(input.equals("read display")){//readDisplay
+
+            }
+            else if(input.equals("buy")){//buy
+
+            }
+            else if(input.equals("cancel")){//cancel
+
+            }
+            else if(input.equals("login")){//login
+                System.out.println("Username: "); //root
+                input = userInput.nextLine();
+                if(input.equals("root")){
+                    System.out.println("Password: ");
+                    input = userInput.nextLine();
+                    if(input.equals("toor")){
+                        admin = true;
+                    }
+                    else{
+                        System.out.println("login failed");
+                    }
+                }
+                else{
+                    System.out.println("login failed");
+                }
+            }
+            else if(input.equals("logout")){//logout
+                admin = false;
+            }
+            else if(input.equals("change town")){//changeTown and updateRate
+                if(admin){
+                    System.out.println("Enter the new town");
+                    input = userInput.nextLine();
+                }
+                else{
+                    System.out.println("admin only functionality");
+                }
+            }
+            else if(input.equals("help")){
+                System.out.println("Acceptable inputs:");
+                System.out.println("add payment");
+                System.out.println("read display");
+                System.out.println("buy");
+                System.out.println("cancel");
+                System.out.println("login");
+                System.out.println("logout");
+                System.out.println("change town");
+                System.out.println("shutdown");
+            }
+            else if(input.equals("shutdown")){
+                userInput.close();
+                activeTransaction = false;
+            }
+            else{
+                System.out.println("input not recognized. Try help if lost");
+            }
+
         }
     }
     
