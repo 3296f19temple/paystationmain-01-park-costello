@@ -21,13 +21,24 @@ import java.util.*;
  * purposes. For any commercial use, see http://www.baerbak.com/
  */
 public class PayStationImpl implements PayStation {
-    
+
+    PayStationImpl() {
+
+        rateStrategy = new LinearRateStrategy();
+    }
+
+//    enum Town {
+//        Alphatown, Betatown, Gammatown
+//        //accepted values should be A, B, or G for the respective towns
+//    }
     private int insertedSoFar;
     private int timeBought;
     private Map coinMap = new HashMap();
     private boolean nickleBool = false;
     private boolean dimeBool = false;
     private boolean quarterBool = false;
+    private Town currentLocation = Town.Alphatown;
+    private RateStrategy rateStrategy;
     
     @Override
     public void addPayment(int coinValue)
@@ -72,7 +83,8 @@ public class PayStationImpl implements PayStation {
                 throw new IllegalCoinException("Invalid coin: " + coinValue);
         }
         insertedSoFar += coinValue;
-        timeBought = insertedSoFar / 5 * 2;
+        //timeBought = insertedSoFar / 5 * 2; deprecated
+        timeBought = rateStrategy.calculateTime(insertedSoFar);
     }
 
     @Override
@@ -88,10 +100,9 @@ public class PayStationImpl implements PayStation {
     }
 
     @Override
-    public Map<Integer, Integer> cancel() 
+    public Map<Integer, Integer> cancel()
     {
-        Map tempMap =  new HashMap();
-        tempMap.putAll(coinMap);
+        Map tempMap = new HashMap(coinMap);
         reset();
         return tempMap;
     }
