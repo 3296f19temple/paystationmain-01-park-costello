@@ -5,6 +5,10 @@
  */
 package paystation.domain;
 
+import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
  *
  * @author Dumpus
@@ -45,5 +49,29 @@ class LinearRateStrategy implements RateStrategy {
         return moneyInserted / 5 * 2;
     }
 
+}
+
+class AlternatingRateStrategy implements RateStrategy {
+
+    @Override
+    public int calculateTime(int moneyInserted) {
+
+        if (itIsTheWeekend()) {
+            RateStrategy lrs = new LinearRateStrategy();
+            return lrs.calculateTime(moneyInserted);
+        } else {
+            RateStrategy prs = new ProgressiveRateStrategy();
+            return prs.calculateTime(moneyInserted);
+        }
+    }
+
+    private boolean itIsTheWeekend() {
+        Date date = new Date(); //today's date
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date); //date on calendar
+        //check if sunday or saturday
+        return (calendar.get(Calendar.DAY_OF_WEEK) == 1 ||
+                calendar.get(Calendar.DAY_OF_WEEK) == 7);
+    }
 }
 
