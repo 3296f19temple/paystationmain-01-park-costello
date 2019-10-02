@@ -341,5 +341,4 @@ public class PayStationImplTest {
             assertEquals(130, rateStrategy.calculateTime(400)); //>350
         }
     }
-
 }
